@@ -9,7 +9,7 @@ Download [MySQL 5.6](https://dev.mysql.com/downloads/mysql/5.6.html)
 (do the x64 zip installer)
 
 ### Step 2:
-Extract the folder from the archive wherever you want. I'd recommend using folder like `C:\dev\db\`.  In the CS lab extract to your My Documents folder.
+Extract the folder from the archive wherever you want. I'd recommend using folder like `C:\dev\db\`.
 
 ### Step 3:
 Download [Ruby 2.0.0-p647 (x64) and the mingw 64-bit devkit](http://rubyinstaller.org/downloads/)
