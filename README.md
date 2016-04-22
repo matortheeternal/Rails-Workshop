@@ -60,24 +60,24 @@ Run `rake db:migrate` to update your database.
 ### Step 8:
 Run `rails s` to start the Ruby on Rails server.  You can access it from your web browser at [localhost:3000](http://localhost:3000).  You'll be able to access the pages creates through scaffolding by going to the following routes:
 
-* `/persons`: Will display an index of all persons in your database in the form of a table.  This page shouldn't display anything until you create some person records.
-* `/persons/:id`: Replace `:id` with the id of the person record you wish to view.  This page is the "Show" page for a single person record.
-* `/persons/:id/edit`: Allows you to edit a person record with the id `:id`
-* `/persons/:id/new`: Allows you to create a new person record.
+* `/people`: Will display an index of all people in your database in the form of a table.  This page shouldn't display anything until you create some person records.
+* `/people/:id`: Replace `:id` with the id of the person record you wish to view.  This page is the "Show" page for a single person record.
+* `/people/:id/edit`: Allows you to edit a person record with the id `:id`
+* `/people/:id/new`: Allows you to create a new person record.
 
 Note that all of these routes (and a destroy route, which I didn't mention) are created for resources when you scaffold them.
 
 
 ## Routing in Rails
-A route is a path a client can go to in their web browser to access some content.  Ruby on rails defines routes for your web application in `config\routes.rb`.  When you use `rails g scaffold`, you'll notice that the only route created is a `resources Persons` one.  This is actually a macro for a number of routes, listed below:
+A route is a path a client can go to in their web browser to access some content.  Ruby on rails defines routes for your web application in `config\routes.rb`.  When you use `rails g scaffold`, you'll notice that the only route created is a `resources people` one.  This is actually a macro for a number of routes, listed below:
 
-* `match "/persons", to: "persons#index", via: :get`
-* `match "/persons/:id", to: "persons#show", via: :get`
-* `match "/persons/:id/new", to: "persons#new", via: :get`
-* `match "/persons/:id/edit", to: "persons#edit", via: :get`
-* `match "/persons/:id", to: "persons#update", via: :post`
-* `match "/persons", to: "persons#create", via: :post`
-* `match "/persons/:id", to: "persons#destroy", via: :delete`
+* `match "/people", to: "people#index", via: :get`
+* `match "/people/:id", to: "people#show", via: :get`
+* `match "/people/:id/new", to: "people#new", via: :get`
+* `match "/people/:id/edit", to: "people#edit", via: :get`
+* `match "/people/:id", to: "people#update", via: :post`
+* `match "/people", to: "people#create", via: :post`
+* `match "/people/:id", to: "people#destroy", via: :delete`
 
 This format for a route has three major parts.  The first part is the route itself, which is the path the user navigates to in their web browser for the route to be triggered.  The second part is the controller action to handle the route.  In Ruby on Rails objects called "controllers" are what handle what should occur when a route is triggered.  More on them in the next section!  The last part is the [HTTP verb](http://www.restapitutorial.com/lessons/httpmethods.html) to match to the route. 
 
@@ -87,12 +87,12 @@ This format for a route has three major parts.  The first part is the route itse
 ## Controllers in Rails
 Rails works under a model-view-controller model (MVC).  This is an architectural pattern.  You can read more about it [here](http://www.tutorialspoint.com/ruby-on-rails/rails-framework.htm).
 
-I'll give a really practical overview of controllers.  Open the `app\controllers\persons_controller.rb` file generated from scaffolding in your text editor.
+I'll give a really practical overview of controllers.  Open the `app\controllers\people_controller.rb` file generated from scaffolding in your text editor.
 
 ### Line 1: Class Declaration
-`class PersonsController < ApplicationController`
+`class peopleController < ApplicationController`
 
-This declares the `PersonsController` class and says it inherits from the `ApplicationController`.  You generally won't change this line unless you make a controller which does some actions which you want other controllers to be able to do too, then you can inherit from that controller instead of `ApplicationController`.
+This declares the `peopleController` class and says it inherits from the `ApplicationController`.  You generally won't change this line unless you make a controller which does some actions which you want other controllers to be able to do too, then you can inherit from that controller instead of `ApplicationController`.
 
 ### Line 2: Before Action
 `  before_action :set_person, only: [:show, :edit, :update, :destroy]`
@@ -102,8 +102,8 @@ This line says that, before executing the methods show, edit, update or destroy,
 Another note: in Ruby you can declare an immutable (unchangeable) string by prepending a colon.  These are called symbols.  E.g. `:this_is_a_symbol`.  You generally want to use these for internal logic, but you can use ordinary strings just as well (the [difference is with memory](http://stackoverflow.com/questions/16621073/when-to-use-symbols-instead-of-strings-in-ruby), and is more in depth than this workshop will be).
 
 ### Line 4: Some generated comments
-`# GET /persons`
-`# GET /persons.json`
+`# GET /people`
+`# GET /people.json`
 
 The scaffold action will generate these comments to help you understand how the routes and the controller actions interact.  I'd say it's good practice to have these, in general.
 
@@ -115,7 +115,7 @@ In Ruby you use the hash character `#` to designate a comment.
 In Ruby you use the format `def` to define a method.  You then put the name of the method and can define parameters it takes in parenthesis (like most languages).
 
 ### Line 7: Load data
-`  @persons = Person.all`
+`  @people = Person.all`
 
 This line loads all Person records from the database.  Capital P `Person` is a reference to the person model, which is the object which represents/interacts with Person records in your database.
 
@@ -126,9 +126,9 @@ This sets up a block of code which tells what the server should do depending on 
 
 Inside of this block you'll see lines like `format.html` or `format.json`, followed by nothing (which causes the default render action to be performed), or by a render action in a code block (which is designated by squiggly braces like Java and C-like languages).
 
-`  format.json { render :json => @persons }`
+`  format.json { render :json => @people }`
 
-This line says: "if the requested data format is [JSON](https://en.wikipedia.org/wiki/JSON), render (to the user) :json data for the `@persons` data object.  You can see this route in action by navigating to the route `/persons.json`.
+This line says: "if the requested data format is [JSON](https://en.wikipedia.org/wiki/JSON), render (to the user) :json data for the `@people` data object.  You can see this route in action by navigating to the route `/people.json`.
 
 ### Params
 Skipping forward a bit, you may notice that in the private methods at the bottom of the controller we reference the `params` variable.  This is a variable that is accessible in every controller which is the collection of params being sent to the user.  (e.g. from form inputs, or from the `:id` input defined in the route (as discussed earlier).  You can also set params through URL [query strings](https://en.wikipedia.org/wiki/Query_string).
